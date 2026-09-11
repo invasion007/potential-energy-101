@@ -574,6 +574,32 @@
     text(ctx, 'Ep = 0', b.x + 6, b.y - 14, THEME.zero, 12.5, 'left');
   }
 
+  /** 剖面线：沿场线方向、过小球所在 v 的坡面剖面 —— φ(x) 是一条直线（q=1 时数值上即 Ep(x)） */
+  function drawProfileLine(ctx, S, s) {
+    if (S.sh * 4 < 20) { return; }              // 俯视时剖面线贴近视线，画了反而乱
+    var v = s.ball.y, N = 64, i, u, p, first = null, last = null, mid = null;
+    ctx.save();
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.strokeStyle = THEME.gold; ctx.lineWidth = 3.4;
+    ctx.shadowColor = 'rgba(255,196,80,0.45)'; ctx.shadowBlur = 10;
+    ctx.beginPath();
+    for (i = 0; i <= N; i++) {
+      u = lerp(U0, U1, i / N);
+      p = S.main(u, v, P.epAt(QREF, u, s.x0, s.E));
+      if (i === 0) { ctx.moveTo(p.x, p.y); first = p; } else { ctx.lineTo(p.x, p.y); }
+      if (i === Math.round(N * 0.62)) { mid = p; }
+      last = p;
+    }
+    ctx.stroke();
+    ctx.restore();
+    // 两端端点（可读出这条直线的落差）
+    dot(ctx, first, 3.4, '#1b1b1b', THEME.gold);
+    dot(ctx, last, 3.4, '#1b1b1b', THEME.gold);
+    if (mid) {
+      text(ctx, '剖面线 φ(x)：斜率 = E', mid.x, mid.y - 15, THEME.gold, 12.5, 'center', '700');
+    }
+  }
+
   /** 高度轴（Ep / J） */
   function drawHeightAxis(ctx, S) {
     if (S.sh * 4 < 26) {                   // 俯视时高度在屏幕上退化，画不出刻度，直接不画
@@ -790,6 +816,7 @@
       drawOnePath(ctx, S, s, activePath(s), THEME.path[s.pathMode], 3);
     }
 
+    if (s.show.slopeGhost) { drawProfileLine(ctx, S, s); }
     drawZeroLine(ctx, S, s);
     // 始末点：A、B 在地形面上的位置
     var pA = S.main(s.A.x, s.A.y, P.epAt(s.q, s.A.x, s.x0));
@@ -1068,8 +1095,10 @@
     {
       act: '第二幕 · 电势能的可视化', title: 'Ep(x) 是一条直线',
       hint: '拖动 <b>零势能面</b>，看这条剖面线整体上下平移',
-      note: '沿场线方向 φ 随位置线性变化，斜率就是场强 E；电势能 Ep = qφ 同样是直线。换零点不是改坡度，而是把整张面上下平移。',
-      formula: 'φ(x) = E(x₀ − x)　斜率 = E　｜　Ep = qφ' },
+      note: '沿场线方向 φ 随位置线性变化，斜率就是场强 E；电势能 Ep = qφ 同样是直线。换零点不是改坡度，而是把整张面上下平移 —— 金色剖面线始终是一条直线，拖零势能面时它整体平移，倾斜程度不变。',
+      formula: 'φ(x) = E(x₀ − x)　斜率 = E　｜　Ep = qφ',
+      allow: { zero: true, ball: true, q: true },
+      init: function (s) { s.x0 = 0.2; s.q = 1; s.ball = { x: -1.0, y: 0.2 }; s.show.path = false; s.show.slopeGhost = true; } },
     {
       act: '第二幕 · 电势能的可视化', title: '地形面的陡缓：场强 E（这是“电势”的事）',
       hint: '拖动下面的 <b>场强 E</b> 滑杆，看地形面变陡 / 变缓',
@@ -1551,7 +1580,7 @@
     verifyPaths: verifyPaths,
     selfTest: function () { return P.runSelfTest(); },
     stepMeta: function () {
-      return St.STEPS.map(function (d, i) { return { i: i, act: d.act, title: d.title, allow: Object.keys(d.allow) }; });
+      return St.STEPS.map(function (d, i) { return { i: i, act: d.act, title: d.title, allow: Object.keys(d.allow || {}) }; });
     }
   };
 
