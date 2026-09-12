@@ -6,17 +6,19 @@
 <title>10.1 做功与电势能 · 可交互课件</title>
 <style>
   :root{
-    /* 配色照参考视频《[manim可视化]“看见”电场》：深灰底 + 暖红(正) + 冷蓝(负) + 浅白网格 */
-    --bg:#1b1b1b; --bg2:#232323; --panel:#262626; --line:#3a3a3a; --line2:#4a4a4a;
-    --ink:#f2f2f2; --ink2:#b9b9b9; --muted:#8a8a8a;
-    --pos:#e2574a;      /* 正电势能：暖红 */
-    --pos2:#f0836f;
-    --neg:#3f93d6;      /* 负电势能：冷蓝 */
-    --neg2:#79bce8;
-    --wire:#e8e8e8;     /* 网格线 */
-    --gold:#ffd75e;     /* 高亮/关键量 */
-    --green:#7fd18a;
-    --phi:#c79bf0;      /* 电势 φ */
+    /* 配色基准：原版 Manim（3Blue1Brown）—— 纯黑底 + 白线为主 + Manim 官方色常量
+       红=正量 蓝=负量 黄=结论色 绿=对照 紫=第三条路；一屏同屏彩色 ≤3 种 */
+    --bg:#000000; --bg2:#0a0a0a; --panel:#0e0e0e; --line:#242424; --line2:#383838;
+    --ink:#FFFFFF; --ink2:#B0B0B0; --muted:#888888;
+    --pos:#FC6255;      /* 正电势能：暖红 */
+    --pos2:#FC6255;
+    --neg:#58C4DD;      /* 负电势能：冷蓝 */
+    --neg2:#58C4DD;
+    --wire:#FFFFFF;     /* 网格线 */
+    --yellow:#FFFF00;   /* 结论色 Manim YELLOW：做功/能量/这一屏要记住的量 */
+    --gold:#F0AC5F;     /* 次强调 Manim GOLD：选中态等暖色辅助 */
+    --green:#83C167;
+    --phi:#9A72AC;      /* 电势 φ */
   }
   *{box-sizing:border-box;}
   html,body{margin:0;height:100%;}
@@ -32,7 +34,7 @@
     background:var(--bg2); border-bottom:1px solid var(--line);}
   header h1{font-size:16px; margin:0; font-weight:600; letter-spacing:.5px; white-space:nowrap;}
   .stepsn{margin-left:auto;}
-  .act{font-size:13px; color:var(--gold); border:1px solid var(--line2); border-radius:10px;
+  .act{font-size:13px; color:var(--yellow); border:1px solid var(--line2); border-radius:10px;
     padding:1px 9px; white-space:nowrap;}
   .steptitle{font-size:15px; color:var(--ink); font-weight:600;}
   .stepsn{margin-left:auto; font-size:13px; color:var(--ink2); font-variant-numeric:tabular-nums;}
@@ -42,7 +44,7 @@
   .canvaswrap{position:relative; min-width:0; min-height:0; padding:6px 8px 0 8px;}
   canvas{display:block; width:100%; height:100%;}
   .hint{padding:7px 20px 0 20px; font-size:12.5px; color:var(--muted); height:36px; overflow:hidden;}
-  .hint b{color:var(--gold); font-weight:600;}
+  .hint b{color:var(--yellow); font-weight:600;}
 
   /* ---------- 右栏读数 ---------- */
   aside{background:var(--panel); border-left:1px solid var(--line); padding:12px 14px; overflow:auto;}
@@ -51,28 +53,28 @@
   .rd:last-of-type{border-bottom:none;}
   .rd span{color:var(--ink2);}
   .rd b{font-size:17px; font-variant-numeric:tabular-nums; letter-spacing:.3px;}
-  .rd b.pos{color:var(--pos2);} .rd b.neg{color:var(--neg2);} .rd b.gold{color:var(--gold);}
+  .rd b.pos{color:var(--pos2);} .rd b.neg{color:var(--neg2);} .rd b.gold{color:var(--yellow);}
   .rd b.phi{color:var(--phi);} .rd b.green{color:var(--green);}
   aside h3{font-size:12px; color:var(--muted); margin:15px 0 4px; font-weight:600; letter-spacing:1px;}
   .formula{font-size:13.5px; color:var(--ink); line-height:1.85;}
-  .formula em{color:var(--gold); font-style:normal;}
+  .formula em{color:var(--yellow); font-style:normal;}
   .note{font-size:12.5px; color:var(--ink2); line-height:1.7; margin-top:8px;}
 
   /* ---------- 底部控制 ---------- */
   footer{display:flex; align-items:center; gap:12px; padding:9px 18px 11px;
     background:var(--bg2); border-top:1px solid var(--line); flex-wrap:wrap;}
-  button{font-family:inherit; font-size:13.5px; color:var(--ink); background:#333;
+  button{font-family:inherit; font-size:13.5px; color:var(--ink); background:#141414;
     border:1px solid var(--line2); border-radius:8px; padding:6px 14px; cursor:pointer;}
-  button:hover{background:#3d3d3d; border-color:#5a5a5a;}
+  button:hover{background:#1e1e1e; border-color:#4a4a4a;}
   button:active{transform:translateY(1px);}
-  button.main{background:#3a4a3a; border-color:#4f6b4f;}
-  button.main:hover{background:#445544;}
-  button.on{background:#4a4430; border-color:var(--gold); color:#ffe9a8;}
-  .bar{flex:1; min-width:180px; height:6px; background:#333; border-radius:4px; position:relative; cursor:pointer;}
-  .bar i{position:absolute; left:0; top:0; bottom:0; background:var(--gold); border-radius:4px;}
-  .bar u{position:absolute; top:-4px; width:2px; height:14px; background:#666;}
+  button.main{background:#1a1a1a; border-color:#4a4a4a;}
+  button.main:hover{background:#242424;}
+  button.on{background:rgba(240,172,95,0.16); border-color:var(--gold); color:var(--gold);}
+  .bar{flex:1; min-width:180px; height:6px; background:#141414; border-radius:4px; position:relative; cursor:pointer;}
+  .bar i{position:absolute; left:0; top:0; bottom:0; background:var(--yellow); border-radius:4px;}
+  .bar u{position:absolute; top:-4px; width:2px; height:14px; background:#4a4a4a;}
   .slider{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink2);}
-  .slider input[type=range]{width:132px; accent-color:var(--gold);}
+  .slider input[type=range]{width:132px; accent-color:var(--yellow);}
   .slider b{color:var(--ink); font-variant-numeric:tabular-nums; min-width:38px; display:inline-block; text-align:right;}
   .grp{display:flex; gap:6px; align-items:center;}
   .grp .lab{font-size:12.5px; color:var(--muted);}
@@ -350,7 +352,9 @@
 /* =====================================================================
    viz_render.js —— 绘制层
 
-   视觉语言（照参考视频《[manim可视化]“看见”电场》）：
+   视觉语言：原版 Manim（3Blue1Brown）基调 —— 纯黑底、白线为主、Manim 官方色常量
+     （红 #FC6255 = 正量，蓝 #58C4DD = 负量，黄 #FFFF00 = 结论色，绿 #83C167 = 对照，紫 #9A72AC = 第三条路）
+   画面内容（照参考视频《[manim可视化]“看见”电场》）：
      把电势能画成一张“能量地形面”：
        · 面的高低 = 电势能 Ep 的大小（红色=正、蓝色=负、白色网格）
        · 匀强电场里这张面是一张“等倾斜的坡”
@@ -363,22 +367,22 @@
 
   var P = global.VizPhys;
 
-  /* ---------- 配色（可用取色脚本按参考视频校准；只改这一处） ---------- */
+  /* ---------- 配色：Manim 官方色常量，只改这一处（改配色必须同步 风格与技术路线.md） ---------- */
   var THEME = {
-    bg: '#1b1b1b',
-    posFill: 'rgba(226,87,74,0.42)',     // 正电势能：暖红
-    posLine: '#f0836f',
-    negFill: 'rgba(63,147,214,0.42)',    // 负电势能：冷蓝
-    negLine: '#79bce8',
-    wire: 'rgba(232,232,232,0.30)',      // 白色网格
+    bg: '#000000',
+    posFill: 'rgba(252,98,85,0.22)',     // 正电势能：暖红
+    posLine: '#FC6255',
+    negFill: 'rgba(88,196,221,0.22)',    // 负电势能：冷蓝
+    negLine: '#58C4DD',
+    wire: 'rgba(255,255,255,0.22)',      // 白色网格
     wireStrong: 'rgba(255,255,255,0.55)',
-    base: 'rgba(150,150,150,0.16)',      // 零势能基准面
-    baseLine: 'rgba(160,160,160,0.35)',
-    ink: '#f2f2f2', ink2: '#c8c8c8', muted: '#9a9a9a',
-    gold: '#ffd75e', green: '#7fd18a', phi: '#c79bf0',
-    path: { line: '#ffd75e', poly: '#7fd18a', curve: '#c79bf0' },
+    base: 'rgba(136,136,136,0.12)',      // 零势能基准面
+    baseLine: 'rgba(136,136,136,0.30)',
+    ink: '#FFFFFF', ink2: '#B0B0B0', muted: '#888888',
+    gold: '#FFFF00', green: '#83C167', phi: '#9A72AC',
+    path: { line: '#FFFF00', poly: '#83C167', curve: '#9A72AC' },
     zero: '#ffffff',
-    hot: '#ff6b5a'
+    hot: '#FC6255'
   };
 
   var U0 = -2.0, U1 = 2.0;        // 沿场线方向的范围 (m)
@@ -532,8 +536,8 @@
     var us = [U0, xc, U1];
     var cols = (sign > 0) ? [THEME.posFill, THEME.negFill] : [THEME.negFill, THEME.posFill];
     if (dim) {
-      cols = (sign > 0) ? ['rgba(226,87,74,0.16)', 'rgba(63,147,214,0.16)']
-                        : ['rgba(63,147,214,0.16)', 'rgba(226,87,74,0.16)'];
+      cols = (sign > 0) ? ['rgba(252,98,85,0.13)', 'rgba(88,196,221,0.13)']
+                        : ['rgba(88,196,221,0.13)', 'rgba(252,98,85,0.13)'];
     }
     for (var k = 0; k < 2; k++) {
       var ua = us[k], ub = us[k + 1];
@@ -548,7 +552,7 @@
 
     // 网格：纵向线（沿 v，即等高线方向）+ 横向线（沿 u，即坡向）
     var i, k;
-    var gridCol = dim ? 'rgba(232,232,232,0.16)' : THEME.wire;
+    var gridCol = dim ? 'rgba(255,255,255,0.12)' : THEME.wire;
     var dashPat = dashed ? [4, 4] : null;
     for (k = 0; k <= 16; k++) {                       // 等势线：高度相同的横线
       var u = lerp(U0, U1, k / 16), h = sign * P.epAt(QREF, u, x0, E);
@@ -581,7 +585,7 @@
     ctx.save();
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.strokeStyle = THEME.gold; ctx.lineWidth = 3.4;
-    ctx.shadowColor = 'rgba(255,196,80,0.45)'; ctx.shadowBlur = 10;
+    ctx.shadowColor = 'rgba(255,255,0,0.30)'; ctx.shadowBlur = 10;
     ctx.beginPath();
     for (i = 0; i <= N; i++) {
       u = lerp(U0, U1, i / N);
@@ -593,8 +597,8 @@
     ctx.stroke();
     ctx.restore();
     // 两端端点（可读出这条直线的落差）
-    dot(ctx, first, 3.4, '#1b1b1b', THEME.gold);
-    dot(ctx, last, 3.4, '#1b1b1b', THEME.gold);
+    dot(ctx, first, 3.4, '#000000', THEME.gold);
+    dot(ctx, last, 3.4, '#000000', THEME.gold);
     if (mid) {
       text(ctx, '剖面线 φ(x)：斜率 = E', mid.x, mid.y - 15, THEME.gold, 12.5, 'center', '700');
     }
@@ -604,18 +608,18 @@
   function drawHeightAxis(ctx, S) {
     if (S.sh * 4 < 26) {                   // 俯视时高度在屏幕上退化，画不出刻度，直接不画
       var ny = (S.W < 760) ? (S.mainH - 12) : (S.mainH - 32);   // 都放在主视图底部，避开图例
-      text(ctx, '俯视看不出高度 → 切「斜视 / 侧视」', 16, ny, 'rgba(160,160,160,0.9)', 12.5, 'left');
+      text(ctx, '俯视看不出高度 → 切「斜视 / 侧视」', 16, ny, 'rgba(136,136,136,0.9)', 12.5, 'left');
       return;
     }
     var cor = S.main(U0 - 0.05, V0 - 0.05, 0);
     var ax = Math.max(40, Math.min(cor.x - 18, S.W * 0.16));
     var y0 = cor.y;                        // h = 0 对应的屏幕高度
     var top = y0 - HMAX * 0.78 * S.sh, bot = y0 + HMAX * 0.78 * S.sh;
-    arrow(ctx, { x: ax, y: bot }, { x: ax, y: top }, 'rgba(210,210,210,0.6)', 1.4, 8);
+    arrow(ctx, { x: ax, y: bot }, { x: ax, y: top }, 'rgba(255,255,255,0.45)', 1.4, 8);
     text(ctx, 'φ / V', ax + 24, top + 4, THEME.ink2, 12.5);
     for (var h = -8; h <= 8; h += 4) {
       var y = y0 - h * S.sh;
-      seg(ctx, { x: ax - 5, y: y }, { x: ax + 5, y: y }, 'rgba(210,210,210,0.6)', 1.2);
+      seg(ctx, { x: ax - 5, y: y }, { x: ax + 5, y: y }, 'rgba(255,255,255,0.45)', 1.2);
       text(ctx, (h > 0 ? '+' : '') + h, ax - 9, y, THEME.muted, 11.5, 'right');
     }
     text(ctx, '0', ax - 9, y0, THEME.ink2, 11.5, 'right');
@@ -706,7 +710,7 @@
     dot(ctx, pg, r, qq > 0 ? THEME.posLine : THEME.negLine);
     ctx.restore();
     ctx.save();
-    ctx.fillStyle = '#161616'; ctx.font = '700 ' + Math.round(r * 1.5) + 'px "WenQuanYi Zen Hei",sans-serif';
+    ctx.fillStyle = '#000000'; ctx.font = '700 ' + Math.round(r * 1.5) + 'px "WenQuanYi Zen Hei",sans-serif';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(qq > 0 ? '+' : '−', pg.x, pg.y + 1);
     ctx.restore();
@@ -730,9 +734,9 @@
     for (i = 0; i <= 4; i++) {
       v = lerp(V0, V1, i / 4);
       var a = S.strip(U0 - 0.16, v), b = S.strip(U1 + 0.16, v);
-      seg(ctx, a, b, 'rgba(230,230,230,0.22)', 1.1);
+      seg(ctx, a, b, 'rgba(255,255,255,0.16)', 1.1);
       var m1 = S.strip(U0 + (U1 - U0) * 0.34, v), m2 = S.strip(U0 + (U1 - U0) * 0.66, v);
-      arrow(ctx, m1, m2, 'rgba(230,230,230,0.5)', 1.3, 7);
+      arrow(ctx, m1, m2, 'rgba(255,255,255,0.38)', 1.3, 7);
     }
     text(ctx, 'E', xR + 16, yTop + 26, THEME.ink2, 14, 'center', '600');
   }
@@ -758,7 +762,7 @@
     // A / B / M 标记
     var mark = function (pt, name, color, dx, dy) {
       var p = S.strip(pt.x, pt.y);
-      dot(ctx, p, 5, '#1b1b1b', color);
+      dot(ctx, p, 5, '#000000', color);
       text(ctx, name, p.x + (dx || 0), p.y + (dy === undefined ? -14 : dy), color, 13, 'center', '700');
     };
     mark(s.A, 'A', THEME.posLine);
@@ -769,8 +773,8 @@
   function drawStripCharge(ctx, S, s, pos) {
     var p = S.strip(pos.x, pos.y);
     var r = 6.5;
-    dot(ctx, p, r, s.q > 0 ? THEME.posLine : THEME.negLine, '#111');
-    text(ctx, s.q > 0 ? '+' : '−', p.x, p.y + 0.5, '#161616', 12, 'center', '700');
+    dot(ctx, p, r, s.q > 0 ? THEME.posLine : THEME.negLine, '#000000');
+    text(ctx, s.q > 0 ? '+' : '−', p.x, p.y + 0.5, '#000000', 12, 'center', '700');
     // 静电力 F = qE
     var f = P.force(s.q, s.E);
     var len = clamp(Math.abs(f) * 0.16, 0.25, 0.75) * (f >= 0 ? 1 : -1);
@@ -802,7 +806,7 @@
     if (s.show.pairBalls || s.q < 0) {
       drawSurface(ctx, S, s, -1, true, true);
       var pm = S.main(U1, V1, -P.epAt(QREF, U1, s.x0, s.E));
-      text(ctx, '−q 那一面（−φ）', pm.x, pm.y + 18, 'rgba(205,205,205,0.8)', 11.5, 'center');
+      text(ctx, '−q 那一面（−φ）', pm.x, pm.y + 18, 'rgba(136,136,136,0.9)', 11.5, 'center');
     }
     drawSurface(ctx, S, s, 1, false, false);
 
@@ -821,8 +825,8 @@
     // 始末点：A、B 在地形面上的位置
     var pA = S.main(s.A.x, s.A.y, P.epAt(s.q, s.A.x, s.x0));
     var pB = S.main(s.B.x, s.B.y, P.epAt(s.q, s.B.x, s.x0));
-    dot(ctx, pA, 4.5, '#1b1b1b', THEME.posLine); text(ctx, 'A', pA.x - 12, pA.y - 10, THEME.posLine, 13, 'center', '700');
-    dot(ctx, pB, 4.5, '#1b1b1b', THEME.posLine); text(ctx, 'B', pB.x + 12, pB.y - 10, THEME.posLine, 13, 'center', '700');
+    dot(ctx, pA, 4.5, '#000000', THEME.posLine); text(ctx, 'A', pA.x - 12, pA.y - 10, THEME.posLine, 13, 'center', '700');
+    dot(ctx, pB, 4.5, '#000000', THEME.posLine); text(ctx, 'B', pB.x + 12, pB.y - 10, THEME.posLine, 13, 'center', '700');
 
     var ballPos = s.ball;
     drawBall(ctx, S, s, ballPos);
@@ -834,10 +838,10 @@
       16, 20, THEME.muted, 12.5, 'left');
     text(ctx, narrow ? '面 = 电势 φ｜球贴在面上｜球大 = |q|｜柱高 = Ep = qφ'
                     : '面 = 电势 φ 的地形（与电荷无关）｜球贴在面上（轴上位置 = ±φ，只随位置变）｜球大 = |q|｜能量柱高 = Ep = qφ｜红 φ>0　蓝 φ<0',
-      16, narrow ? 38 : S.mainH - 14, 'rgba(160,160,160,0.92)', 12, 'left');
+      16, narrow ? 38 : S.mainH - 14, 'rgba(136,136,136,0.95)', 12, 'left');
     void 0;
     text(ctx, narrow ? '拖动转视角 · 滚轮缩放 · 双击复位' : '拖动空白处旋转视角（右键 / Shift 拖动随时可转）· 滚轮缩放 · 双击复位',
-      W - 16, 20, 'rgba(150,150,150,0.85)', 12, 'right');
+      W - 16, 20, 'rgba(136,136,136,0.9)', 12, 'right');
     seg(ctx, { x: 0, y: S.mainH + 2 }, { x: W, y: S.mainH + 2 }, 'rgba(255,255,255,0.10)', 1);
 
     /* ===== 下：俯视图（物理空间） ===== */
@@ -909,7 +913,7 @@
 
   /* ---------- 画布叠加层（对照页 / 结论页） ---------- */
   function scrim(ctx, S) {
-    ctx.save(); ctx.fillStyle = 'rgba(24,24,24,0.86)';
+    ctx.save(); ctx.fillStyle = 'rgba(0,0,0,0.86)';
     ctx.fillRect(0, 0, S.W, S.mainH); ctx.restore();
   }
   function txt(ctx, str, x, y, color, size, align, weight) {
@@ -928,7 +932,7 @@
     ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
     ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
     ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
-    ctx.fillStyle = 'rgba(255,255,255,0.04)'; ctx.fill(); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.fill(); ctx.stroke();
     ctx.restore();
     txt(ctx, text, x + w / 2, y + h / 2, color, size || 14.5, 'center', '600');
   }
@@ -994,21 +998,21 @@
       overlay: function (ctx, W, H, S, s) {
         scrim(ctx, S);
         var cx = W / 2, y0 = S.mainH * 0.20;
-        txt(ctx, '两种力做功，一个套路', cx, y0, '#f2f2f2', 22, 'center', '700');
+        txt(ctx, '两种力做功，一个套路', cx, y0, '#FFFFFF', 22, 'center', '700');
         var colW = Math.min(360, W * 0.32), gap = Math.min(120, W * 0.10);
         var x1 = cx - gap / 2 - colW, x2 = cx + gap / 2;
         var y = y0 + 46, h = 150;
-        chip(ctx, x1, y, colW, h, '', 'rgba(140,140,140,0.9)');
-        txt(ctx, '重力场', x1 + colW / 2, y + 24, '#e2574a', 18, 'center', '700');
-        txt(ctx, '重力 mg　恒定、竖直向下', x1 + colW / 2, y + 56, '#c8c8c8', 14);
-        txt(ctx, '高度差 h', x1 + colW / 2, y + 82, '#c8c8c8', 14);
-        txt(ctx, 'W_G = mgh', x1 + colW / 2, y + 114, '#ffd75e', 17, 'center', '700');
-        chip(ctx, x2, y, colW, h, '', 'rgba(140,140,140,0.9)');
-        txt(ctx, '静电场', x2 + colW / 2, y + 24, '#3f93d6', 18, 'center', '700');
-        txt(ctx, '静电力 qE　恒定、沿场线', x2 + colW / 2, y + 56, '#c8c8c8', 14);
-        txt(ctx, '沿场线的距离 d', x2 + colW / 2, y + 82, '#c8c8c8', 14);
-        txt(ctx, 'W = qE·d', x2 + colW / 2, y + 114, '#ffd75e', 17, 'center', '700');
-        txt(ctx, '恒定力 → 做功只与始末位置有关 → 可以引入“势能”', cx, y + h + 42, '#7fd18a', 16, 'center', '600');
+        chip(ctx, x1, y, colW, h, '', 'rgba(136,136,136,0.9)');
+        txt(ctx, '重力场', x1 + colW / 2, y + 24, '#FC6255', 18, 'center', '700');
+        txt(ctx, '重力 mg　恒定、竖直向下', x1 + colW / 2, y + 56, '#B0B0B0', 14);
+        txt(ctx, '高度差 h', x1 + colW / 2, y + 82, '#B0B0B0', 14);
+        txt(ctx, 'W_G = mgh', x1 + colW / 2, y + 114, '#FFFF00', 17, 'center', '700');
+        chip(ctx, x2, y, colW, h, '', 'rgba(136,136,136,0.9)');
+        txt(ctx, '静电场', x2 + colW / 2, y + 24, '#58C4DD', 18, 'center', '700');
+        txt(ctx, '静电力 qE　恒定、沿场线', x2 + colW / 2, y + 56, '#B0B0B0', 14);
+        txt(ctx, '沿场线的距离 d', x2 + colW / 2, y + 82, '#B0B0B0', 14);
+        txt(ctx, 'W = qE·d', x2 + colW / 2, y + 114, '#FFFF00', 17, 'center', '700');
+        txt(ctx, '恒定力 → 做功只与始末位置有关 → 可以引入“势能”', cx, y + h + 42, '#83C167', 16, 'center', '600');
       }
     },
     {
@@ -1021,18 +1025,18 @@
       overlay: function (ctx, W, H, S, s) {
         scrim(ctx, S);
         var cx = W / 2, y = S.mainH * 0.30;
-        txt(ctx, '“入场券”是怎么拿到手的', cx, S.mainH * 0.18, '#f2f2f2', 22, 'center', '700');
+        txt(ctx, '“入场券”是怎么拿到手的', cx, S.mainH * 0.18, '#FFFFFF', 22, 'center', '700');
         var items = ['静电力做功\n与路径无关', '能量只由\n始末位置决定', '存在“只由位置\n决定的能量”', '电势能 Ep\nW_AB = EpA − EpB'];
         var n = items.length, bw = Math.min(190, W * 0.19), gap = Math.min(46, W * 0.04);
         var totalW = n * bw + (n - 1) * gap, x = cx - totalW / 2;
         for (var i = 0; i < n; i++) {
-          chip(ctx, x, y, bw, 92, '', i === n - 1 ? '#ffd75e' : 'rgba(150,150,150,0.85)');
+          chip(ctx, x, y, bw, 92, '', i === n - 1 ? '#FFFF00' : 'rgba(136,136,136,0.9)');
           var lines = items[i].split('\n');
-          txt(ctx, lines[0], x + bw / 2, y + 34, i === n - 1 ? '#ffd75e' : '#e8e8e8', 14.5, 'center', '600');
-          txt(ctx, lines[1], x + bw / 2, y + 60, i === n - 1 ? '#ffd75e' : '#e8e8e8', 14.5, 'center', '600');
+          txt(ctx, lines[0], x + bw / 2, y + 34, i === n - 1 ? '#FFFF00' : '#FFFFFF', 14.5, 'center', '600');
+          txt(ctx, lines[1], x + bw / 2, y + 60, i === n - 1 ? '#FFFF00' : '#FFFFFF', 14.5, 'center', '600');
           if (i < n - 1) {
             var ax = x + bw + 6, ay = y + 46;
-            ctx.save(); ctx.strokeStyle = '#9a9a9a'; ctx.fillStyle = '#9a9a9a'; ctx.lineWidth = 2;
+            ctx.save(); ctx.strokeStyle = '#888888'; ctx.fillStyle = '#888888'; ctx.lineWidth = 2;
             ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(ax + gap - 12, ay); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(ax + gap - 12, ay);
             ctx.lineTo(ax + gap - 20, ay - 5); ctx.lineTo(ax + gap - 20, ay + 5); ctx.closePath(); ctx.fill();
@@ -1125,20 +1129,20 @@
       overlay: function (ctx, W, H, S, s) {
         scrim(ctx, S);
         var cx = W / 2, y = S.mainH * 0.24;
-        txt(ctx, '三句话带走', cx, y - 26, '#f2f2f2', 22, 'center', '700');
+        txt(ctx, '三句话带走', cx, y - 26, '#FFFFFF', 22, 'center', '700');
         var rows = [
-          ['Ep = qE·d', '大小由 电荷量 q、位置 d、零点选取 三者共同决定', '#e2574a'],
-          ['ΔEp = −W_AB', '与路径无关 —— 只由始末位置决定', '#7fd18a'],
-          ['φ = Ep/q', '与试探电荷无关；沿电场线方向 φ 降低', '#c79bf0']
+          ['Ep = qE·d', '大小由 电荷量 q、位置 d、零点选取 三者共同决定', '#FC6255'],
+          ['ΔEp = −W_AB', '与路径无关 —— 只由始末位置决定', '#83C167'],
+          ['φ = Ep/q', '与试探电荷无关；沿电场线方向 φ 降低', '#9A72AC']
         ];
         var bw = Math.min(760, W * 0.80), x = cx - bw / 2;
         for (var i = 0; i < rows.length; i++) {
           var yy = y + 6 + i * 74;
           chip(ctx, x, yy, bw, 60, '', rows[i][2]);
           txt(ctx, rows[i][0], x + 28, yy + 30, rows[i][2], 18, 'left', '700');
-          txt(ctx, rows[i][1], x + 230, yy + 30, '#dcdcdc', 14.5, 'left');
+          txt(ctx, rows[i][1], x + 230, yy + 30, '#B0B0B0', 14.5, 'left');
         }
-        txt(ctx, '下节课：电势差 U_AB —— 有了高度，自然要问高度差', cx, y + 6 + 3 * 74 + 22, '#ffd75e', 15, 'center', '600');
+        txt(ctx, '下节课：电势差 U_AB —— 有了高度，自然要问高度差', cx, y + 6 + 3 * 74 + 22, '#FFFF00', 15, 'center', '600');
       }
     }
   ];
@@ -1253,8 +1257,8 @@
 
   function barRow(name, val, pct, color, unit) {
     return '<div style="display:flex;align-items:center;gap:7px;margin:5px 0;font-size:12.5px">' +
-      '<span style="width:66px;color:#b9b9b9">' + name + '</span>' +
-      '<span style="flex:1;height:9px;background:#333;border-radius:5px;overflow:hidden">' +
+      '<span style="width:66px;color:#B0B0B0">' + name + '</span>' +
+      '<span style="flex:1;height:9px;background:#141414;border-radius:5px;overflow:hidden">' +
       '<i style="display:block;height:100%;width:' + clamp(pct, 0, 100).toFixed(1) + '%;background:' + color + '"></i></span>' +
       '<b style="width:64px;text-align:right;color:' + color + ';font-variant-numeric:tabular-nums">' + sgn(val) + ' ' + (unit || 'J') + '</b>' +
       '</div>';
@@ -1267,7 +1271,7 @@
       var vals = keys.map(function (k) { return P.accumulate(R.pathOf(pts, k[0]), q, st.E).W; });
       var max = Math.max.apply(null, vals.map(Math.abs)) || 1;
       html += '<h3>' + (mode === 'W' ? '三条路径：静电力做的功' : '三条路径：电势能的变化') + '</h3>';
-      html += '<div style="font-size:12px;color:#8a8a8a;margin:-2px 0 6px">' +
+      html += '<div style="font-size:12px;color:#888888;margin:-2px 0 6px">' +
         (mode === 'W' ? 'W = qE·|AM|，三条完全一样' : 'ΔEp = −W，三条完全一样') + '</div>';
       for (var i = 0; i < keys.length; i++) {
         var v = (mode === 'W') ? vals[i] : -vals[i];
@@ -1282,9 +1286,9 @@
       html += '<h3>两点的对比（同一电场）</h3>';
       html += barRow('Ep(A)', epA, Math.abs(epA) / mx * 100, epA > 0 ? R.THEME.posLine : R.THEME.negLine);
       html += barRow('Ep(B)', epB, Math.abs(epB) / mx * 100, epB > 0 ? R.THEME.posLine : R.THEME.negLine);
-      html += '<div style="font-size:12.5px;color:#c79bf0;margin-top:6px">φA = ' + sgn(phA) +
+      html += '<div style="font-size:12.5px;color:#9A72AC;margin-top:6px">φA = ' + sgn(phA) +
         ' V　φB = ' + sgn(phB) + ' V　→　φA ' + (phA < phB ? '&lt;' : '&gt;') + ' φB（与 q 无关）</div>';
-      html += '<div style="font-size:12.5px;color:#dcdcdc;margin-top:4px">' +
+      html += '<div style="font-size:12.5px;color:#B0B0B0;margin-top:4px">' +
         (q > 0 ? '正电荷：Ep(A) &gt; Ep(B)（φ 高处 Ep 大）' : '负电荷：Ep(A) &lt; Ep(B) —— 反转了！') + '</div>';
       return html;
     }
@@ -1296,9 +1300,9 @@
       html += '<h3>同一点：等量正负电荷</h3>';
       html += barRow('Ep(+q)', epP, Math.abs(epP) / mx3 * 100, R.THEME.posLine);
       html += barRow('Ep(−q)', epN, Math.abs(epN) / mx3 * 100, R.THEME.negLine);
-      html += '<div style="font-size:12.5px;color:#c79bf0;margin-top:6px">φ = ' + sgn(ph2) +
+      html += '<div style="font-size:12.5px;color:#9A72AC;margin-top:6px">φ = ' + sgn(ph2) +
         ' V —— 只有一条，与 q 无关</div>';
-      html += '<div style="font-size:12.5px;color:#dcdcdc;margin-top:4px">大小相等、符号相反：Ep(−q) = −Ep(+q)</div>';
+      html += '<div style="font-size:12.5px;color:#B0B0B0;margin-top:4px">大小相等、符号相反：Ep(−q) = −Ep(+q)</div>';
       return html;
     }
     if (mode === 'zero') {
@@ -1307,9 +1311,9 @@
       var m2 = Math.max(Math.abs(dEp), Math.abs(eA), Math.abs(eB), 0.001);
       html += '<h3>零点一动：读数变，差值不变</h3>';
       html += barRow('ΔEp (A→B)', dEp, Math.abs(dEp) / m2 * 100, R.THEME.green);
-      html += barRow('Ep(A)', eA, Math.abs(eA) / m2 * 100, '#e2574a');
-      html += barRow('Ep(B)', eB, Math.abs(eB) / m2 * 100, '#e2574a');
-      html += '<div style="font-size:12px;color:#8a8a8a;margin-top:4px">拖动零势能面：下面两条随零点变，上面那条纹丝不动</div>';
+      html += barRow('Ep(A)', eA, Math.abs(eA) / m2 * 100, '#FC6255');
+      html += barRow('Ep(B)', eB, Math.abs(eB) / m2 * 100, '#FC6255');
+      html += '<div style="font-size:12px;color:#888888;margin-top:4px">拖动零势能面：下面两条随零点变，上面那条纹丝不动</div>';
       return html;
     }
     return html;
