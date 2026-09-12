@@ -4,17 +4,15 @@
 
 - **第一幕 · 做功与路径无关**：直线 / 折线 / 任意曲线三条路径并排比对，曲线用微元法「曲化直」切成 N 段（N=1~32 可调）。
 - **第二幕 · 电势能的可视化**：把电势画成一张有高低的地形面（红 = φ>0，蓝 = φ<0），球贴在面上（轴上位置 = ±φ），球的大小 = |q|，黄色剖面线量出 Ep = qφ。
+- **顶部导航条**：按「幕」分组的 18 个步骤数字块，当前步高亮，点数字直接跳步。
 
-## 在线打开（只记这一条）
+## 在线打开（就这一条）
 
 **https://dianshineng.247518.xyz/**
 
-备用（主链接没生效时用）：
+备用：https://invasion007.github.io/potential-energy-101/
 
-- https://cdn.jsdelivr.net/gh/invasion007/potential-energy-101@main/index.html
-- https://invasion007.github.io/potential-energy-101/
-
-> 不要使用 potential-energy-101.pages.dev —— 该域名在部分网络（含本校网络）实测连接超时。
+> 不要使用 potential-energy-101.pages.dev（实测网络不通），也不要用 jsDelivr 那条（时通时不通）。
 
 ## 文件
 
